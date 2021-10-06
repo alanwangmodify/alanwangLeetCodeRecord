@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        if (digits.size() == 1 && digits[0] == 0) {
+            digits[0] = 1;
+            return digits;
+        }
+        for (int i = digits.size() -1; i >= 0 ; i--) {
+            if (digits[i]  < 9) {//凡事被遍历到的都要+1 。个位数+1 和进位+1；没有进位的情况，后面的数字都不会改变了，不用遍历了，直接return 。
+                digits[i] = digits[i] + 1;
+                return digits;
+            }else {//要进位的都为0
+                digits[i] = 0;
+            }
+        }
+        //到了这里还没有return,说明是999.. 最大位变成10 ，要进位
+    
+        vector<int> temp;
+        temp.push_back(1);
+        for (int i  = 0; i < digits.size() ; i++) {
+            temp.push_back(digits[i]);
+        }
+        return temp;
+    }
+    
+};
