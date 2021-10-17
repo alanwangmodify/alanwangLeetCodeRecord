@@ -1,0 +1,34 @@
+
+class Solution {
+public:
+    vector<string> subdomainVisits(vector<string>& cpdomains) {
+
+        for(auto  &cpdomain : cpdomains)  {
+            int count = 0;
+            int tempStarIndex = 0;//用于裁剪字符串的其实位置
+            for (int i=0 ; i < cpdomain.size(); i++) {
+                if (cpdomain[i] == ' ') {//空格前为次数
+                    count = atoi(cpdomain.substr(0,i).c_str());
+                    tempStarIndex = i+1;
+                }
+                if(cpdomain[i] == '.' || cpdomain[i] == ' ') {
+                    string  domain =  cpdomain.substr(i+1,cpdomain.size()-i-1); 
+                    if (dmc.find(domain) == dmc.end()) {//不存在直接记录次数
+                        dmc[domain] = count;
+                    }else {//如果key 已经存在，就在原有基础上加上次数
+                        int temp = dmc[domain] + count;
+                        dmc[domain] = temp;
+                    }
+                }
+            }
+        }
+        vector<string> all;
+        for (auto&[domain, count]: dmc) {
+            all.push_back( to_string(count)+' '+ domain);
+        }
+        return all;
+    }
+
+    unordered_map<string, int> dmc;
+
+};
