@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int findShortestSubArray(vector<int>& nums) {
+         unordered_map<int,vector<int>> count_map;
+        for (int i= 0; i < nums.size(); i++){
+            int num = nums[i];
+            if (count_map.find(num) == count_map.end()) {//之前还没存在过
+                count_map[num] = {1,i,i}; 
+                //index 0 存出现次数
+                //index 1 用于存第一个出现的index
+                //index 2 用于存最后一个出现的index
+            }else {
+                // vector<int> count_data = count_map[num];
+                // count_data[0] = count_data[0] + 1;
+                // count_data[2] = i;//更新最后一个出现时的index
+                // count_map[num] = count_data;
+                count_map[num][0]++;
+                count_map[num][2]=i;
+            }
+        }
+        int maxNum = 0, minLen = 0;
+        for (auto& [_,count_list] : count_map) {
+            if (maxNum < count_list[0] ) {//有更大次数时更新一下max
+                maxNum = count_list[0];
+                minLen = count_list[2]- count_list[1] + 1;
+            }else if (maxNum    == count_list[0]) {//最大次数相同时 ，取疮毒更短的一段
+                if (minLen > count_list[2] - count_list[1]) {
+                    minLen = count_list[2]- count_list[1] + 1;    
+                }
+                
+            }
+
+        }
+        return minLen;
+    }
+   
+};
