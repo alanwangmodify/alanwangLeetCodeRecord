@@ -1,0 +1,30 @@
+class Solution {
+    unordered_map<int, int> map;
+    int rootIndex;
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        int idx = 0;
+        for (auto& val : inorder) {
+            map[val] = idx++;
+        }
+        rootIndex = (int)postorder.size() - 1;
+        return makeTree(0,inorder.size()-1,inorder,postorder);
+    }
+  //中序，  后续
+
+    TreeNode* makeTree(int left1,int right1,vector<int>& inorder, vector<int>& postorder) {
+        if (left1 > right1) {
+            return nullptr;
+        }
+        //后序遍历 最后一个为root
+        TreeNode* root =  new TreeNode(postorder[rootIndex]);
+        int mid = map[root->val];   
+   //     后序遍历是是  -- 左子树进行后序遍历（递归）- 右子树进行后序遍历（递归- 根
+//先序遍历是 -- 根- 左子树进行先序遍历（递归）-  右子树进行先序遍历（递归）
+        rootIndex--;
+        root->right = makeTree(mid+1,right1,inorder,postorder);
+        root->left = makeTree(left1,mid-1, inorder,postorder);
+        printf("rootIndex: %d",rootIndex);
+        return root;
+    }
+};
